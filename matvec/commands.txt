@@ -1,0 +1,23 @@
+iree-opt /uufs/chpc.utah.edu/common/home/u1418973/other/llvm_stuff/IREE/iree/tests/transform_dialect/cpu/matmul.mlir --iree-hal-target-backends=llvm-cpu    --iree-abi-transformation-pipeline    --iree-flow-transformation-pipeline    --iree-stream-transformation-pipeline    --iree-hal-configuration-pipeline |  iree-opt --pass-pipeline='builtin.module(hal.executable(hal.executable.variant(iree-llvmcpu-lower-executable-target)))'    --iree-codegen-llvmcpu-use-transform-dialect=/uufs/chpc.utah.edu/common/home/u1418973/other/llvm_stuff/IREE/iree/tests/transform_dialect/cpu/matmul_codegen_default_spec.mlir
+
+
+
+// RUN: iree-compile %s --iree-hal-target-backends=llvm-cpu \
+// RUN:   --iree-codegen-llvmcpu-use-transform-dialect=%p/matvec_linalg_spec.mlir | \
+// RUN: iree-run-module --entry_function=matvec_static \
+// RUN:   --function_input="3x5xf32=1" \
+// RUN:   --function_input="5xf32=1" \
+// RUN:   --function_input="3xf32=0"| \
+
+
+
+# matvec no transform dialect
+iree-compile /uufs/chpc.utah.edu/common/home/u1418973/other/llvm_stuff/IREE/iree/tests/transform_dialect/cuda/matvec_linalg.mlir --iree-hal-target-backends=llvm-cpu | iree-run-module --entry_function=matvec_static --function_input="3x5xf32=1" --function_input="5xf32=1" --function_input="3xf32=0"
+
+
+
+
+##3 
+iree-compile /uufs/chpc.utah.edu/common/home/u1418973/other/llvm_stuff/IREE/iree/tests/transform_dialect/cuda/matvec_linalg.mlir --iree-hal-target-backends=llvm-cpu --iree-codegen-llvmcpu-use-transform-dialect=matvec_linalg_spec.mlir 
+
+| iree-run-module --entry_function=matvec_static --function_input="3x5xf32=1" --function_input="5xf32=1" --function_input="3xf32=0"

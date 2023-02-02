@@ -1,0 +1,6 @@
+iree-compile matvec_generic.mlir --iree-hal-target-backends=llvm-cpu  |  iree-run-module --entry_function=my_matvec --function_input="3x5xf32=1" --function_input="5xf32=1" --function_input="3xf32=0"
+
+
+iree-opt matvec_generic.mlir --iree-hal-target-backends=llvm-cpu  --iree-abi-transformation-pipeline --iree-flow-transformation-pipeline  --iree-stream-transformation-pipeline    --iree-hal-configuration-pipeline
+
+iree-compile matvec_generic.mlir --iree-hal-target-backends=cuda --iree-hal-cuda-llvm-target-arch="sm_80" |  iree-run-module --entry_function=my_matvec --function_input="3x5xf32=1" --function_input="5xf32=1" --function_input="3xf32=0" --device=cuda

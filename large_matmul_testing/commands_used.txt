@@ -1,0 +1,5 @@
+// This dumps the various optimizations output.
+
+iree-compile ../iree/tests/e2e/matmul/large_linalg_matmul.mlir -iree-hal-target-backends=cuda --iree-hal-cuda-llvm-target-arch=sm_80 -o matmul.vmfb -mlir-print-ir-after-all -mlir-disable-threading 2> dump.mlir
+
+
